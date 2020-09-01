@@ -94,14 +94,16 @@ source ~/.zsh_secrets
 # export ARCHFLAGS="-arch x86_64"
 export LD_LIBRARY_PATH=$HOME/.local/lib
 export GOPATH=$HOME/ws/go
+export GOBIN=$GOPATH/bin
 export YARNPATH=$HOME/.yarn
 export OBSPATH=$HOME/.local/share/obs-studio-portable
-export PATH="$PATH:$GOPATH/bin:$YARNPATH/bin:$HOME/.local/bin:$OBSPATH/bin/64bit"
+export PATH="$PATH:$GOBIN:$YARNPATH/bin:$HOME/.local/bin:$OBSPATH/bin/64bit"
 
 # git
 git config --global push.default current
 git config --global user.name tyler
 git config --global user.email tyler@cruftbusters.com
+=======
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
