@@ -118,6 +118,10 @@ nginx() { docker run --rm --name nginx-ephemeral -v ${1:-$(pwd)}:/usr/share/ngin
 uriencode () { node -e "console.log(encodeURIComponent('$1'))" ; }
 uuidcopy() { uuidgen | tr -d '\n-' | xclip -sel clip ; }
 versionByDepth() { echo v${1:-0}.${2:-0}.`git rev-list --count HEAD` ; }
+tagByDepth() {
+  git tag `versionByDepth $1 $2`
+  git push origin `versionByDepth $1 $2`
+}
 ## Timelapse
 timelapse() {
 ffmpeg -r $1 \
