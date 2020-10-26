@@ -71,7 +71,9 @@ ZSH_THEME="robbyrussell"
 plugins=(git ssh-agent)
 
 source $ZSH/oh-my-zsh.sh
-source /usr/share/nvm/init-nvm.sh
+if [ -f /usr/share/nvm/init-nvm.sh ] ; then
+  source /usr/share/nvm/init-nvm.sh
+fi
 source ~/.zsh_secrets
 
 # User configuration
