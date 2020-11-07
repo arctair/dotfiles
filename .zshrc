@@ -94,8 +94,8 @@ source ~/.zsh_secrets
 # export ARCHFLAGS="-arch x86_64"
 export LD_LIBRARY_PATH=$HOME/.local/lib
 export GOPATH=$HOME/ws/go
-export GOBIN=$GOPATH/bin
-export PATH="$PATH:$GOBIN"
+export YARNPATH=$HOME/.yarn
+export PATH="$PATH:$GOPATH/bin:$YARNPATH/bin:$HOME/.local/bin"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
