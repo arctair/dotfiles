@@ -1,4 +1,4 @@
-Xft.dpi: 240
+Xft.dpi: 210
 URxvt.font: xft:DejaVuSansMono:size=14
 URxvt.foreground: #AAAAAA
 URxvt.background: #111111
