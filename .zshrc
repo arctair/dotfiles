@@ -97,6 +97,11 @@ export GOPATH=$HOME/ws/go
 export YARNPATH=$HOME/.yarn
 export PATH="$PATH:$GOPATH/bin:$YARNPATH/bin:$HOME/.local/bin"
 
+# git
+git config --global push.default current
+git config --global user.name tyler
+git config --global user.email tyler@cruftbusters.com
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
