@@ -170,3 +170,10 @@ configureSwitchStream() {
   kill $ffmpegPid
   xrandr --output DP1 --off --output eDP1 --pos 0x0 --mode 3200x1800
 }
+brightness() {
+  if [ -z "$1" ] ; then
+    cat /sys/class/backlight/intel_backlight/brightness
+  else
+    echo $1 | tee /sys/class/backlight/intel_backlight/brightness
+  fi
+}
