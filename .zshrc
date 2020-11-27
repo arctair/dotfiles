@@ -95,7 +95,8 @@ source ~/.zsh_secrets
 export LD_LIBRARY_PATH=$HOME/.local/lib
 export GOPATH=$HOME/ws/go
 export YARNPATH=$HOME/.yarn
-export PATH="$PATH:$GOPATH/bin:$YARNPATH/bin:$HOME/.local/bin"
+export OBSPATH=$HOME/.local/share/obs-studio-portable
+export PATH="$PATH:$GOPATH/bin:$YARNPATH/bin:$HOME/.local/bin:$OBSPATH/bin/64bit"
 
 # git
 git config --global push.default current
