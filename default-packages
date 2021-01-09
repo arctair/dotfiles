@@ -1,3 +1,4 @@
+apg
 base-devel
 bluez
 bluez-utils
@@ -5,6 +6,7 @@ cmake
 discord
 dmenu
 docker
+gimp
 go
 i3status
 iwd
@@ -12,14 +14,19 @@ jq
 keepassxc
 kubectl
 libxft2
+netcat
 networkmanager
 openssh
 pavucontrol
+pcmanfm
 pulseaudio
 python-pip
+qgis
+rawtherapee
 redshift
 rsync
 rxvt-unicode
+scrot
 vscode
 xclip
 xorg-xbacklight
@@ -27,3 +34,4 @@ xorg-xinit
 xorg-xrandr
 xterm
 yarn
+zip
