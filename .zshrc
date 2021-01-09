@@ -103,6 +103,7 @@ export PATH="$PATH:$GOBIN:$YARNPATH/bin:$HOME/.local/bin:$OBSPATH/bin/64bit"
 git config --global push.default current
 git config --global user.name tyler
 git config --global user.email tyler@cruftbusters.com
+git config --global pull.rebase true
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
