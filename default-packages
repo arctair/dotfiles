@@ -5,8 +5,10 @@ cmake
 discord
 dmenu
 docker
+efibootmgr
 gimp
 go
+grug
 i3status
 intellij-idea-community-edition
 iwd
@@ -26,6 +28,7 @@ redshift
 rsync
 rxvt-unicode
 scrot
+sudo
 vim
 vscode
 xclip
