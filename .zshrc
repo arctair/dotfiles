@@ -127,7 +127,18 @@ gitInitRoot() {
   git init
   git commit --allow-empty -m root
 }
-createRepository() { curl -sXPOST https://api.github.com/user/repos -u arctair:$GITHUB_TOKEN -d "{\"name\":\"$1\"}" ; }
+createRepository() {
+  curl -sXPOST \
+    https://api.github.com/user/repos \
+    -u arctair:$GITHUB_TOKEN \
+    -d "{\"name\":\"$1\"}" ;
+}
+createOrgRepository() {
+  curl -sXPOST \
+    https://api.github.com/orgs/$1/repos \
+    -u arctair:$GITHUB_TOKEN \
+    -d "{\"name\":\"$2\"}" ;
+}
 jsconfig() { echo '{"compilerOptions":{"baseUrl":"src"}}' | jq . ; }
 nginx() { docker run --rm --name nginx-ephemeral -v ${1:-$(pwd)}:/usr/share/nginx/html:ro -p 80:80 nginx-static ; }
 uriencode () { node -e "console.log(encodeURIComponent('$1'))" ; }
