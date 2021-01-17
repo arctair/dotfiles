@@ -98,6 +98,7 @@ export GOBIN=$GOPATH/bin
 export YARNPATH=$HOME/.yarn
 export OBSPATH=$HOME/.local/share/obs-studio-portable
 export PATH="$PATH:$GOBIN:$YARNPATH/bin:$HOME/.local/bin:$OBSPATH/bin/64bit"
+export GROOVY_TURN_OFF_JAVA_WARNINGS=true
 
 # git
 git config --global push.default current
