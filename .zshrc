@@ -123,10 +123,6 @@ alias yat="yarn acceptanceTest"
 alias gomon='nodemon -e go --exec "go test || exit 1"'
 # Functions
 ## Development
-gitInitRoot() {
-  git init
-  git commit --allow-empty -m root
-}
 createRepository() {
   curl -sXPOST \
     https://api.github.com/user/repos \
