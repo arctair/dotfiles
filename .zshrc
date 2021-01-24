@@ -92,6 +92,9 @@ source ~/.zsh_secrets
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+if [ -f /usr/share/camlink/camlink.so ] ; then
+  export LD_PRELOAD="$LD_PRELOAD /usr/share/camlink/camlink.so"
+fi
 export LD_LIBRARY_PATH=$HOME/.local/lib
 export GOPATH=$HOME/ws/go
 export GOBIN=$GOPATH/bin
