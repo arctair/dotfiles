@@ -1,3 +1,5 @@
+#include ".Xtheme"
+
 Xft.dpi: 210
 URxvt.font: xft:DejaVuSansMono:size=14
 URxvt.foreground: #AAAAAA
