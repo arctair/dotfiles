@@ -7,6 +7,7 @@ discord
 dmenu
 docker
 efibootmgr
+feh
 firefox
 gimp
 git
@@ -32,6 +33,7 @@ rsync
 rxvt-unicode
 scrot
 sudo
+viewnior
 vim
 vscode
 xclip

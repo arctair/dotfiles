@@ -9,6 +9,9 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
+# background
+exec --no-startup-id feh --bg-fill ~/pictures/jpg.d/7f0ffb46-10ef-412d-a0f4-58911a9596d1-4.jpg
+
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
