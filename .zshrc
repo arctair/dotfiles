@@ -128,6 +128,9 @@ alias gomon='nodemon -e go --exec "go test || exit 1"'
 # Functions
 ## Development
 wip() {
+  if [[ "`current_branch`" == "main" || "`current_branch`" == "master" ]] ; then
+    git checkout -b wip
+  fi
   git add --all
   git commit -m wip
 }
