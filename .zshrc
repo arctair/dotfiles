@@ -95,6 +95,9 @@ source ~/.zsh_secrets
 if [ -f /usr/share/camlink/camlink.so ] ; then
   export LD_PRELOAD="$LD_PRELOAD /usr/share/camlink/camlink.so"
 fi
+if [ -f /usr/share/nvm/init-nvm.sh ] ; then
+  source /usr/share/nvm/init-nvm.sh
+fi
 export LD_LIBRARY_PATH=$HOME/.local/lib
 export GOPATH=$HOME/ws/go
 export GOBIN=$GOPATH/bin
