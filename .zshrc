@@ -128,11 +128,20 @@ alias gomon='nodemon -e go --exec "go test || exit 1"'
 # Functions
 ## Development
 wip() {
-  if [[ "`current_branch`" == "main" || "`current_branch`" == "master" ]] ; then
-    git checkout -b wip
+  if [[ `current_branch` != wip/* ]] ; then
+    git checkout -b wip/`current_branch`
   fi
   git add --all
   git commit -m wip
+}
+unwip() {
+  if [[ `current_branch` != wip/* ]] ; then
+    echo not on wip branch
+    return
+  fi
+  git checkout $(echo `current_branch` | sed 's/^wip\///')
+  git merge wip/`current_branch` --squash
+  git branch -D wip/`current_branch`
 }
 createRepository() {
   curl -sXPOST \
