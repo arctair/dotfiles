@@ -1,0 +1,31 @@
+#!/bin/sh
+
+backlight_location=/sys/class/backlight/intel_backlight/brightness
+
+case "$1" in
+  increase-brightness)
+    current=`cat $backlight_location`
+    echo $((current+500)) | sudo tee $backlight_location
+    ;;
+  decrease-brightness)
+    current=`cat $backlight_location`
+    echo $((current-500)) | sudo tee $backlight_location
+    ;;
+  increase-red)
+    current=`cat /tmp/color_temperature || echo 6500`
+    next=$((current-500))
+    echo $next > /tmp/color_temperature
+    redshift -PO $next || echo $current > /tmp/color_temperature
+    ;;
+  increase-blue)
+    current=`cat /tmp/color_temperature || echo 6500`
+    next=$((current+500))
+    echo $next > /tmp/color_temperature
+    redshift -PO $next || echo $current > /tmp/color_temperature
+    ;;
+  *)
+    echo "Unknown command: $1"
+    exit 2
+esac
+
+exit 0
