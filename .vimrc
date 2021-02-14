@@ -1,4 +1,4 @@
-set number
+set autoindent number
 syntax on
 set expandtab
 set tabstop=2
