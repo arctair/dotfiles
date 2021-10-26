@@ -206,3 +206,30 @@ configureSwitchStream() {
   kill $ffmpegPid
   xrandr --output DP1 --off --output eDP1 --pos 0x0 --mode 3200x1800
 }
+lookup-hosted-zone-id() {
+  aws route53 list-hosted-zones | jq ".HostedZones[]|select(.Name==\"$1.\")|.Id" -r
+}
+upsert-cname() {
+  aws route53 change-resource-record-sets \
+    --hosted-zone-id $1 \
+    --change-batch "`cat <<EOF
+  {
+    "Changes": [
+      {
+        "Action": "UPSERT",
+        "ResourceRecordSet": {
+          "Name": "$2",
+          "Type": "CNAME",
+          "TTL": 300,
+          "ResourceRecords": [
+            {
+              "Value": "$3"
+            }
+          ]
+        }
+      }
+    ]
+  }
+EOF`"
+}
+alias n=nvim
