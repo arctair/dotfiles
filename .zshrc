@@ -153,10 +153,13 @@ createRepository() {
     -d "{\"name\":\"$1\"}" ;
 }
 createOrgRepository() {
-  curl -sXPOST \
+  response=`curl -sXPOST \
     https://api.github.com/orgs/$1/repos \
     -u arctair:$GITHUB_TOKEN \
-    -d "{\"name\":\"$2\"}" ;
+    -d "{\"name\":\"$2\"}"`
+  if ! git remote get-url origin ; then
+    git remote add origin `echo $response | jq .ssh_url -r`
+  fi
 }
 jsconfig() { echo '{"compilerOptions":{"baseUrl":"src"}}' | jq . ; }
 nginx() { docker run --rm --name nginx-ephemeral -v ${1:-$(pwd)}:/usr/share/nginx/html:ro -p 80:80 nginx-static ; }
