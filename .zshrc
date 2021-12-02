@@ -206,30 +206,42 @@ configureSwitchStream() {
   kill $ffmpegPid
   xrandr --output DP1 --off --output eDP1 --pos 0x0 --mode 3200x1800
 }
+
+
+# hellish AWS
 lookup-hosted-zone-id() {
   aws route53 list-hosted-zones | jq ".HostedZones[]|select(.Name==\"$1.\")|.Id" -r
 }
 upsert-cname() {
+  # upsert-srv <hosted-zone-id> <resource-record-set-name> <value>
+  resourceRecordSet="`jq -nc \
+    --arg name "$2" \
+    --arg value "$3" \
+    '{Name:$name,Type:"CNAME",TTL:300,ResourceRecords:[{Value:$value}]}'`"
+  upsert="`jq -nc \
+    --argjson resourceRecordSet "$resourceRecordSet" \
+    '{Changes:[{Action:"UPSERT",ResourceRecordSet:$resourceRecordSet}]}'`"
   aws route53 change-resource-record-sets \
     --hosted-zone-id $1 \
-    --change-batch "`cat <<EOF
-  {
-    "Changes": [
-      {
-        "Action": "UPSERT",
-        "ResourceRecordSet": {
-          "Name": "$2",
-          "Type": "CNAME",
-          "TTL": 300,
-          "ResourceRecords": [
-            {
-              "Value": "$3"
-            }
-          ]
-        }
-      }
-    ]
-  }
-EOF`"
+    --change-batch $upsert
 }
-alias n=nvim
+upsert-srv() {
+  # upsert-srv <hosted-zone-id> <resource-record-set-name> <port> <target>
+  resourceRecordSet="`jq -nc \
+    --arg name "$2" \
+    --arg value "10 5 $3 $4" \
+    '{Name:$name,Type:"SRV",TTL:300,ResourceRecords:[{Value:$value}]}'`"
+  upsert="`jq -nc \
+    --argjson resourceRecordSet "$resourceRecordSet" \
+    '{Changes:[{Action:"UPSERT",ResourceRecordSet:$resourceRecordSet}]}'`"
+  aws route53 change-resource-record-sets \
+    --hosted-zone-id $1 \
+    --change-batch $upsert
+}
+update-distribution-origin-https-port() {
+  distribution="`aws cloudfront get-distribution --id $1 | jq -c`"
+  etag="`echo $distribution | jq .ETag`"
+  distributionConfig="`echo $distribution | jq .Distribution.DistributionConfig -c`"
+  update="`jq "{IfMatch:$etag,DistributionConfig:$distributionConfig}|.DistributionConfig.Origins.Items[].CustomOriginConfig.HTTPSPort=$2" -nc`"
+  aws cloudfront update-distribution --id $1 --cli-input-json $update
+}
