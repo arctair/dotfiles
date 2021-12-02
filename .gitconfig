@@ -1,0 +1,14 @@
+[user]
+	email = tyler@cruftbusters.com
+	name = tyler
+  signingkey = EC40DC80851168277D9B58F09014984C86700641
+[push]
+	default = current
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
+[commit]
+  gpgsign = true
+[core]
+	pager = less -x1,3
