@@ -212,36 +212,38 @@ configureSwitchStream() {
 lookup-hosted-zone-id() {
   aws route53 list-hosted-zones | jq ".HostedZones[]|select(.Name==\"$1.\")|.Id" -r
 }
-upsert-cname() {
-  # upsert-srv <hosted-zone-id> <resource-record-set-name> <value>
+upsert-resource-record-set() {
+  # upsert-resource-record-set <hosted-zone-id> <resource-record-set-name> <type> <ttl> <value>
   resourceRecordSet="`jq -nc \
     --arg name "$2" \
-    --arg value "$3" \
-    '{Name:$name,Type:"CNAME",TTL:300,ResourceRecords:[{Value:$value}]}'`"
+    --arg type "$3" \
+    --argjson ttl $4 \
+    --arg value "$5" \
+    '{Name:$name,Type:$type,TTL:$ttl,ResourceRecords:[{Value:$value}]}'`"
   upsert="`jq -nc \
     --argjson resourceRecordSet "$resourceRecordSet" \
     '{Changes:[{Action:"UPSERT",ResourceRecordSet:$resourceRecordSet}]}'`"
   aws route53 change-resource-record-sets \
     --hosted-zone-id $1 \
     --change-batch $upsert
+}
+upsert-cname() {
+  # upsert-srv <hosted-zone-id> <resource-record-set-name> <value>
+  upsert-resource-record-set $1 $2 CNAME 300 $3
 }
 upsert-srv() {
   # upsert-srv <hosted-zone-id> <resource-record-set-name> <port> <target>
-  resourceRecordSet="`jq -nc \
-    --arg name "$2" \
-    --arg value "10 5 $3 $4" \
-    '{Name:$name,Type:"SRV",TTL:300,ResourceRecords:[{Value:$value}]}'`"
-  upsert="`jq -nc \
-    --argjson resourceRecordSet "$resourceRecordSet" \
-    '{Changes:[{Action:"UPSERT",ResourceRecordSet:$resourceRecordSet}]}'`"
-  aws route53 change-resource-record-sets \
-    --hosted-zone-id $1 \
-    --change-batch $upsert
+  upsert-resource-record-set $1 $2 SRV 300 "10 5 $3 $4"
 }
 update-distribution-origin-https-port() {
   distribution="`aws cloudfront get-distribution --id $1 | jq -c`"
-  etag="`echo $distribution | jq .ETag`"
-  distributionConfig="`echo $distribution | jq .Distribution.DistributionConfig -c`"
-  update="`jq "{IfMatch:$etag,DistributionConfig:$distributionConfig}|.DistributionConfig.Origins.Items[].CustomOriginConfig.HTTPSPort=$2" -nc`"
-  aws cloudfront update-distribution --id $1 --cli-input-json $update
+  distributionConfig=
+  update="`jq -nc \
+    --arg ifMatch "$(echo $distribution | jq .ETag -r)" \
+    --argjson distributionConfig "$(echo $distribution | jq .Distribution.DistributionConfig -c)" \
+    --argjson httpsPort $2 \
+    '{IfMatch:$ifMatch,DistributionConfig:$distributionConfig}|.DistributionConfig.Origins.Items[].CustomOriginConfig.HTTPSPort=$httpsPort'`"
+  aws cloudfront update-distribution \
+    --id $1 \
+    --cli-input-json $update
 }
