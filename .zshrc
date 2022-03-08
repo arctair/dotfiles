@@ -247,3 +247,34 @@ update-distribution-origin-https-port() {
     --id $1 \
     --cli-input-json $update
 }
+
+# yagni nonsense
+get-ngrok-uri-by-port() {
+  ssh yagni -- screen -S ngrok -X hardcopy /tmp/ngrok-dump
+  ssh yagni -- grep :$1$ /tmp/ngrok-dump | tr -s ' ' | cut -d ' ' -f2
+}
+update-mommyfactory-dns() {
+  hostedZoneID=`lookup-hosted-zone-id bingecraft.net`
+  uri=`get-ngrok-uri-by-port 25565`
+  host=`echo $uri | cut -d / -f3- | cut -d : -f1`
+  port=`echo $uri | cut -d / -f3- | cut -d : -f2`
+  upsert-cname $hostedZoneID mommyfactory.bingecraft.net $host
+  upsert-srv $hostedZoneID _minecraft._tcp.bingecraft.net $port mommyfactory.bingecraft.net
+}
+update-ngrok-front() {
+  uri=`get-ngrok-uri-by-port 443`
+  host=`echo $uri | cut -d / -f3- | cut -d : -f1`
+  port=`echo $uri | cut -d / -f3- | cut -d : -f2`
+  upsert-cname `lookup-hosted-zone-id cruftbusters.com` ngrok.cruftbusters.com $host
+  update-distribution-origin-https-port E27EUM29AENB82 $port
+}
+update-ngrok-ssh() {
+  uri=`get-ngrok-uri-by-port 22`
+  host=`echo $uri | cut -d / -f3- | cut -d : -f1`
+  port=`echo $uri | cut -d / -f3- | cut -d : -f2`
+  cat <<EOF > ~/.ssh/yagni-config
+Host yagni
+  HostName $host
+  Port $port
+EOF
+}
